@@ -1,0 +1,35 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: quote-backend
+spec:
+  hostname: "*"
+  prefix: /backend/
+  service: quote
+  docs:
+    path: "/.ambassador-internal/openapi-docs"
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: quotefrontend
+spec:
+  hostname: "demo.ryan.k736.net"
+  prefix: /
+  service: quotefrontend
+  cors:
+    origins: 
+    - "http://demo.ryan.k736.net"
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: quote-api
+spec:
+  hostname: "demo.ryan.k736.net"
+  prefix: "/quote/"
+  service: quote.ambassador:80
+
+
+

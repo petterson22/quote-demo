@@ -1,0 +1,36 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: quote-backend
+spec:
+  hostname: "demo.ryan.k736.net"
+  prefix: /backend/
+  service: quote.ambassador:80
+  docs:
+    path: "/.ambassador-internal/openapi-docs"
+  labels:
+    ambassador:
+    - header_request_label:
+      - request_headers:
+          header_name: "x-token-name" 
+          key: headerkey
+---
+apiVersion: getambassador.io/v3alpha1
+kind: RateLimit
+metadata:
+  name: token-name-rate-limit
+  namespace: ambassador
+spec:
+  domain: ambassador
+  limits:
+  - name: token-name-per-minute
+    action: Enforce
+    pattern:
+    - headerkey: ""
+    rate: 10
+    unit: minute
+
+
+
+      

@@ -1,0 +1,78 @@
+---
+# Basic OAuth filter
+apiVersion: getambassador.io/v3alpha1
+kind: Filter
+metadata:
+  name: keycloak-filter-quote
+  namespace: ambassador
+spec:
+  OAuth2:
+    authorizationURL: https://keycloak.ryan.k736.net/realms/master
+    audience: ambassador
+    clientID: ambassador
+    secret: 6Ie5j5aAwqkC0tpaCOv2W0GLt4cK2DnF
+    injectRequestHeaders:
+    - name: "x-token-name"
+      value: "{{ .token.Claims.name }}"
+    protectedOrigins:
+    - origin: https://demo.ryan.k736.net
+      includeSubdomains: true
+
+---
+# Filter for parsing a JWT access token
+apiVersion: getambassador.io/v3alpha1
+kind: Filter
+metadata:
+  name: keycloak-jwt-filter-quote
+  namespace: ambassador
+spec:
+  JWT:
+    injectRequestHeaders:
+    - name: "x-token-name"
+      value: "{{ .token.Claims.name }}"
+    issuer: https://keycloak.ryan.k736.net/realms/master
+    jwksURI: https://keycloak.ryan.k736.net/realms/master/.well-known/openid-configuration
+
+#---
+#apiVersion: getambassador.io/v3alpha1
+#kind: Filter
+#metadata:
+#  name: "example-apikeys-filter"
+#  namespace: "example-namespace"
+#spec:
+#  APIKey:
+#    httpHeader: "x-my-api-key-header" # optional; default is X-API-Key
+#    keys:
+#      - secretName: "my-secret-api-keys"
+#
+
+# ---
+# # This filter connects to a service that takes the token in the Authorization header and makes a request to the id-token endpoint
+# # Full installation details and source code at https://github.com/cakuros/ambassador-external-filter-userinfo
+# apiVersion: getambassador.io/v2
+# kind: Filter
+# metadata:
+#   name: external-filter-userinfo
+# spec:
+#   External:
+#     auth_service: external-filter
+#     allowed_authorization_headers:
+#       - "x-userinfo-name"
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: FilterPolicy
+metadata:
+  name: filter-policy
+  namespace: ambassador
+spec:
+  rules:
+    - host: "demo.ryan.k736.net"
+      path: "*"
+      filters:
+        - name: keycloak-jwt-filter-quote
+          onAllow: "break" # This onAllow/onDeny behavior allows for the fallthrough behavior such that a valid JWT will ignore the remaining filters after this one
+          onDeny: "continue"
+        - name: keycloak-filter-quote
+        
+    
