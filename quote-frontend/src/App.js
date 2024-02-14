@@ -3,8 +3,7 @@ import './App.css';
 import axios from 'axios';
 import {useState} from 'react';
 import edgy from './edgy.png';
-import logo from './new_edgy.png'
-
+//import logo from './new_edgy.png'
 
 
 function App() {
@@ -13,16 +12,14 @@ function App() {
   //const baseURL = "quote.default.svc.cluster.local:80/"
   //For running in Docker container
   const baseURL = "/backend/"
-  const config = {
+  /*const config = {
     headers: {
       "x-telepresence-intercept-id": "bae00cbc-9817-40ec-9c3b-c04afb3a447a:quote",
-    }
-  };
-
+  };*/
 
 
   const getQuote = () => {
-    axios.get(baseURL, config)
+    axios.get(baseURL)
       .then((res, err) => {
         if(res.status === 200){
           console.log(res.data)
@@ -38,7 +35,7 @@ function App() {
       <header className="App-header">
         {/* Replace the image with the Ambassador Logo by 
         replacing "edgy" with "logo" below */}
-        <img src={logo} alt="image" style={{width: "50%"}}/> 
+        <img src={edgy} alt="image" style={{width: "50%"}}/> 
         <div title={"Server: " + quote.server}>
         {quote.quote}
         </div>

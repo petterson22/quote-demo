@@ -1,4 +1,3 @@
----
 apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
@@ -15,19 +14,19 @@ kind: Mapping
 metadata:
   name: quotefrontend
 spec:
-  hostname: "demo.ryan.k736.net"
+  hostname: "demo1.cp.k736.net"
   prefix: /
   service: quotefrontend
   cors:
-    origins: 
-    - "http://demo.ryan.k736.net"
+    origins:
+    - "http://demo1.cp.k736.net"
 ---
 apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: quote-api
 spec:
-  hostname: "demo.ryan.k736.net"
+  hostname: "demo1.cp.k736.net"
   prefix: "/quote/"
   service: quote.ambassador:80
 

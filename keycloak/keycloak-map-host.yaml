@@ -1,11 +1,10 @@
----
 apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: keycloak
 spec:
-  hostname: "keycloak.ryan.k736.net"
-  prefix: / 
+  hostname: "keycloak1.cp.k736.net"
+  prefix: /
   service: keycloak.ambassador:8080
 ---
 apiVersion: getambassador.io/v3alpha1
@@ -13,7 +12,7 @@ kind: Host
 metadata:
   name: keycloak-host
 spec:
-  hostname: "keycloak.ryan.k736.net"
+  hostname: "keycloak1.cp.k736.net"
   acmeProvider:
-    email: rgrantom@datawire.io
+    email: cpetterson@datawire.io
 

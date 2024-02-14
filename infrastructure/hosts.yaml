@@ -1,4 +1,3 @@
----
 apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
@@ -11,7 +10,7 @@ kind: Host
 metadata:
   name: demo-host
 spec:
-  hostname: "demo.ryan.k736.net"
+  hostname: "demo1.cp.k736.net"
   acmeProvider:
-    email: rgrantom@datawire.io
+    email: cpetterson@datawire.io
 
