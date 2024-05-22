@@ -9,7 +9,7 @@ spec:
     authorizationURL: https://keycloak1.cp.k736.net/realms/master
     audience: ambassador
     clientID: ambassador
-    secret: qPTQTj7MceXxKjI7O6UkgdeAgaeoAMaB
+    secret: QxwHFafZjVgFyWoeZDGNI5RiSFYOmcaA
     injectRequestHeaders:
     - name: "x-token-name"
       value: "{{ .token.Claims.name }}"
@@ -31,6 +31,22 @@ spec:
       value: "{{ .token.Claims.name }}"
     issuer: https://keycloak1.cp.k736.net/realms/master
     jwksURI: https://keycloak1.cp.k736.net/realms/master/.well-known/openid-configuration
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: FilterPolicy
+metadata:
+  name: filter-policy
+  namespace: ambassador
+spec:
+  rules:
+  - host: "demo1.cp.k736.net"
+    path: "*"
+    filters:
+    - name: keycloak-jwt-filter-quote
+      onAllow: "break" # This onAllow/onDeny behavior allows for the fallthrough behavior such that a valid JWT will ignore the remaining filters after this one
+      onDeny: "continue"
+    - name: keycloak-filter-quote
 
 #---
 #apiVersion: getambassador.io/v3alpha1
@@ -57,21 +73,3 @@ spec:
 #     auth_service: external-filter
 #     allowed_authorization_headers:
 #       - "x-userinfo-name"
-
----
-apiVersion: getambassador.io/v3alpha1
-kind: FilterPolicy
-metadata:
-  name: filter-policy
-  namespace: ambassador
-spec:
-  rules:
-  - host: "demo1.cp.k736.net"
-    path: "*"
-    filters:
-    - name: keycloak-jwt-filter-quote
-      onAllow: "break" # This onAllow/onDeny behavior allows for the fallthrough behavior such that a valid JWT will ignore the remaining filters after this one
-      onDeny: "continue"
-    - name: keycloak-filter-quote
-
-
